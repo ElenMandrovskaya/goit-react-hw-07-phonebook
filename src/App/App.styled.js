@@ -8,7 +8,7 @@ text-align: center;
 margin: 20px auto;
 padding: 20px;
 background-color: #fff;
-width: 900px;
+width: 1000px;
 box-shadow: 0px 0px 8px 0px rgba(34, 60, 80, 0.2);
 `;
 

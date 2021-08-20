@@ -1,12 +1,13 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import defaultContacts from '../../data/defaultContacts.json'
+// import defaultContacts from '../../data/defaultContacts.json'
 // import contactsTypes from "./contacts-types"; /* ====== REDUX ======*/
 import { addContact, removeContact, filterContacts } from "./contacts-actions";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const initContacts = JSON.parse(localStorage.getItem("contacts")) ?? defaultContacts;
+// const initContacts = JSON.parse(localStorage.getItem("contacts")) ?? defaultContacts;
+const initContacts = [];
 const initFilter = '';
 
 const checkContact = (contacts, name) => {
@@ -25,13 +26,13 @@ const addItem = (state, action) => {
     if (existingСontact) {
         return state;
     }
-    localStorage.setItem("contacts", JSON.stringify([action.payload, ...state]));
+    // localStorage.setItem("contacts", JSON.stringify([action.payload, ...state]));
     return [action.payload, ...state];
 };
 
 const removeItem = (state, action) => {
     const contacts = state.filter(item => item.id !== action.payload);
-    localStorage.setItem("contacts", JSON.stringify(contacts));
+    // localStorage.setItem("contacts", JSON.stringify(contacts));
     return contacts
 };
 
