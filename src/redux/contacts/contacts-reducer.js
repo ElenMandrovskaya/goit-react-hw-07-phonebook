@@ -1,30 +1,12 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import * as contactsActions from '../contacts/contacts-actions.js';
-
-const initFilter = '';
-
-const checkContact = (contacts, name) => {
-    const existingName = contacts.find(
-        (contact) => contact.name.toLowerCase() === name.toLowerCase()
-    );
-    if (existingName) {
-        toast.info('Contact with such name already exists');
-        return 
-    }
-};
 
 const fetchItems = (state, action) => {
     return action.payload
 };
 
 const addItem = (state, action) => {
-  const existingСontact = checkContact(state, action.payload.name);
-    if (existingСontact) {
-        return state;
-    }
     return [action.payload, ...state];
 };
 
@@ -42,7 +24,7 @@ const itemReducer = createReducer([], {
     [contactsActions.deleteContactSuccess]: removeItem,
 });
 
-const filterReducer = createReducer(initFilter, {
+const filterReducer = createReducer('', {
   [contactsActions.filterContacts]: filterItem,
 });
 

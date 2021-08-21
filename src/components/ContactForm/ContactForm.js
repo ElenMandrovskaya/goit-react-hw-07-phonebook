@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { addContact } from '../../redux/contacts/contacts-operations';
 import { Form, Label, Input, Button } from "./ContactForm.styled";
+import { getContacts } from '../../redux/contacts/contacts-selectors'
 
 export function ContactForm() {
   const [name, setName] = useState("");
@@ -10,7 +13,19 @@ export function ContactForm() {
   const nameId = uuidv4();
   const telId = uuidv4();
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
+
+  const checkContact = (contacts, name) => {
+    const existingName = contacts.find(
+        (contact) => contact.name.toLowerCase() === name.toLowerCase()
+    );
+    if (existingName) {
+        toast.info('Contact with such name already exists');
+        return existingName
+    }
+  };
+  
   const handleChange = (evt) => {
     const { name, value } = evt.currentTarget;
     switch (name) {
@@ -29,6 +44,10 @@ export function ContactForm() {
     
     const handleSubmit = (evt) => {
       evt.preventDefault();
+      const duplicateName = checkContact(contacts, name)
+      if (duplicateName) {
+        return
+      }
       dispatch(addContact({name, number}))
       resetForm();
    };
