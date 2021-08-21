@@ -1,8 +1,7 @@
 import { useState } from 'react';
-// import PropTypes from "prop-types";
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contacts/contacts-actions';
+import { addContact } from '../../redux/contacts/contacts-operations';
 import { Form, Label, Input, Button } from "./ContactForm.styled";
 
 export function ContactForm() {

@@ -1,13 +1,9 @@
 import { combineReducers } from "redux";
 import { createReducer } from "@reduxjs/toolkit";
-// import defaultContacts from '../../data/defaultContacts.json'
-// import contactsTypes from "./contacts-types"; /* ====== REDUX ======*/
-import { addContact, removeContact, filterContacts } from "./contacts-actions";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as contactsActions from '../contacts/contacts-actions.js';
 
-// const initContacts = JSON.parse(localStorage.getItem("contacts")) ?? defaultContacts;
-const initContacts = [];
 const initFilter = '';
 
 const checkContact = (contacts, name) => {
@@ -16,69 +12,39 @@ const checkContact = (contacts, name) => {
     );
     if (existingName) {
         toast.info('Contact with such name already exists');
-        return existingName;
+        return 
     }
 };
 
-//========== REDUX TOOLKIT ===========
+const fetchItems = (state, action) => {
+    return action.payload
+};
+
 const addItem = (state, action) => {
   const existingСontact = checkContact(state, action.payload.name);
     if (existingСontact) {
         return state;
     }
-    // localStorage.setItem("contacts", JSON.stringify([action.payload, ...state]));
     return [action.payload, ...state];
 };
 
 const removeItem = (state, action) => {
     const contacts = state.filter(item => item.id !== action.payload);
-    // localStorage.setItem("contacts", JSON.stringify(contacts));
     return contacts
 };
 
 const filterItem = (state, action) => {
     return action.payload;
 };
-
-const itemReducer = createReducer(initContacts, {
-  [addContact]: addItem,
-  [removeContact]: removeItem,
+const itemReducer = createReducer([], {
+    [contactsActions.fetchContactSuccess]: fetchItems,
+    [contactsActions.addContactSuccess]: addItem,
+    [contactsActions.deleteContactSuccess]: removeItem,
 });
 
 const filterReducer = createReducer(initFilter, {
-  [filterContacts]: filterItem,
+  [contactsActions.filterContacts]: filterItem,
 });
-
-
-//=========== REDUX ===================
-
-
-// const itemReducer = (state = initContacts, action) => {
-//     switch (action.type) {
-//         case contactsTypes.ADD:
-//             const existingСontact = checkContact(state, action.payload.name);
-//             if (existingСontact) {
-//                 return state;
-//             }
-//             localStorage.setItem("contacts", JSON.stringify([action.payload, ...state]));
-//             return [action.payload, ...state];
-//         case contactsTypes.REMOVE:
-//             const contacts = state.filter(item => item.id !== action.payload);
-//             localStorage.setItem("contacts", JSON.stringify(contacts));
-//             return contacts
-//         default:
-//             return state;
-//     }
-// };
-
-// const filterReducer = (state = initFilter, action) => {
-//     switch (action.type) {
-//         case contactsTypes.FILTER:
-//             return action.payload;
-//         default:
-//             return state;
-//     }
-// };
 
 const rootReducer = combineReducers({
     items: itemReducer,
